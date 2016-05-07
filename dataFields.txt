@@ -1,0 +1,14 @@
+Agent_Breed,String
+Policy_ID,String
+Age,Double
+Social_Grade,Double
+Payment_at_Purchase,Double
+Attribute_Brand,Double
+Attribute_Price,Double
+Attribute_Promotions,Double
+Auto_Renew,Boolean
+Inertia_for_Switch,Double
+Affinity,Double
+Year,Double
+Change_Breed,Boolean
+Number_changes,Double

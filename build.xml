@@ -1,0 +1,80 @@
+<!--
+  Author: Carlos Agea
+  Date: 16 April 2016
+  Description: Exercise build script
+-->
+<project name="exercise" default="runTest" basedir=".">
+
+	<property name="src.dir"     value="src"/>
+	<property name="test.dir"     value="test"/>
+	<property name="build.dir"   value="build"/>
+	<property name="classes.dir" value="${build.dir}/classes"/>
+	<property name="jar.dir"     value="${build.dir}/jar"/>
+	<property name="lib.dir"     value="lib"/>
+	<property name="main-class"  value="com.exercise.Logic"/>
+	
+	<path id="application" location="${jar.dir}/${ant.project.name}.jar"/>
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+	</target>
+
+	<target name="compile">
+	 	<mkdir dir="${classes.dir}"/>
+	    <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+	 	<javac srcdir="${test.dir}" destdir="${classes.dir}">
+	 		<classpath>
+	 		 <fileset dir="lib">
+	 		                <include name="*.jar"/>
+	 		            </fileset>
+	 			</classpath>
+	 	</javac>
+	 </target>
+
+	 <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+     </target>
+
+	<target name="run" depends="jar">
+		<java fork="true" classname="${main-class}">
+            <classpath>
+                <path refid="classpath"/>
+                <path refid="application"/>
+            </classpath>
+        </java>
+    </target>
+
+	<target name="junit" depends="compile">
+       <junit printsummary="yes"  haltonfailure="no" showoutput="true">
+            <classpath>
+            	<fileset dir="lib">
+                  <include name="*.jar"/>
+              </fileset>
+              <pathelement path="${classes.dir}"/>
+            	
+            </classpath>
+            
+        	<formatter type="plain" usefile="true" />
+        	
+        	 <batchtest fork="no" todir="testResults/.">
+                <fileset dir="test">
+                      <include name="**/*Test*.java" />
+                </fileset>
+            </batchtest>
+        	
+        </junit>
+    </target>
+	
+    <target name="clean-build" depends="clean, jar"/>
+ 
+	<target name="runTest" depends="clean,junit"/>
+	
+</project>

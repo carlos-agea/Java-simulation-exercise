@@ -1,0 +1,6 @@
+Year,Year+1
+Age,Age+1
+Affinity,Payment_at_Purchase/Attribute_Price + (2 * Attribute_Promotions * Inertia_for_Switch)
+Change_Breed,function f1(){if(Auto_Renew){return false;}else{if((Agent_Breed=="Breed_C")&&(Affinity<(Social_Grade*Attribute_Brand))){return true;}else if((Agent_Breed=="Breed_NC")&&(Affinity<(Social_Grade*Attribute_Brand*Brand_Factor))){return true;}else{return false;}}}f1();
+Agent_Breed,function f1(){if(Change_Breed){if(Agent_Breed=="Breed_C"){return"Breed_NC";}else if(Agent_Breed=="Breed_NC"){return"Breed_C";}}else{return Agent_Breed;}}f1();
+Number_changes,function f1(){if(Change_Breed){return Number_changes+1.0;}else{return Number_changes;}}f1();
